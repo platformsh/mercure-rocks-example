@@ -1,0 +1,43 @@
+- name: app
+  
+  type: golang:1.11
+  relationships:
+      kafka: "kafka:kafka"
+  hooks:
+      build: |
+          #Install Mercure using cache
+          MERCUREVERSION=0.9.0
+          FILE="mercure_${MERCUREVERSION}_Linux_x86_64.tar.gz"
+          URL="https://github.com/dunglas/mercure/releases/download/v${MERCUREVERSION}/$FILE"
+          if [ ! -f "$PLATFORM_CACHE_DIR/$FILE" ]; then
+          echo "Downloading $URL"
+              wget -O "$PLATFORM_CACHE_DIR/$FILE" $URL
+          else
+              echo "Found $FILE in cache, using cache"
+          fi
+          file $PLATFORM_CACHE_DIR/$FILE
+          tar xvzf $PLATFORM_CACHE_DIR/$FILE
+      post_deploy: echo  "Your JWT_KEY is $JWT_KEY"
+  variables:
+      env:
+          DEMO: 1
+          KAFKA_ADDRS: "kafka.internal:9092"
+          KAFKA_TOPIC: platform_sh
+          KAFKA_CONSUMER_GROUP: any
+          ADDR: "localhost:8888"
+          JWT_KEY: "!ChangeMe!"
+          TRANSPORT_URL: "bolt:///app/database/database.db"
+  mounts:
+      "database":
+          source: local
+          source_path: "database"
+  web:
+      commands:
+          start: ./mercure
+      locations:
+          /:
+              root: "public"
+              index:
+                  - "index.html"
+              passthru: true
+  disk: 1024
