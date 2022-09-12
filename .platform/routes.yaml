@@ -1,4 +1,5 @@
-"https://{default}/":
+"https://mercure.{default}/":
     type: upstream
-    # the first part should be your project name
-    upstream: "app:http"
+    upstream: "mercure:http"
+    cache:
+        enabled: false
