@@ -1,3 +1,0 @@
-kafka:
-  type: kafka:2.1
-  disk: 512

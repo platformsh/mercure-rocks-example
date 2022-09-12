@@ -11,21 +11,69 @@ See https://mercure.rocks.
 Make sure you change in `.platform/applications.yaml`
 
 ```
-JWT_KEY: "!ChangeMe!"
-DEMO: 1
+MERCURE_PUBLISHER_JWT_KEY='!ChangeMe!'
+MERCURE_SUBSCRIBER_JWT_KEY='!ChangeMe!'
 ```
 
-You should also remove the `public` directory, that is not needed for production.
+You probably also want to disable the demo/ui in:
+`mercure/Caddyfile.platform_sh` and possibly allowing anonymous users.
 
-### Kafka-specific Environment Variables
-
-* `KAFKA_ADDRS`: Addresses of the Kafka servers, separated by a comma (ex: `host1:9092,host2:9092`)
-* `KAFKA_TOPIC`: the name of the Kafka topic to use (ex: `mercure`)
-* `KAFKA_CONSUMER_GROUP`: consumer group, must be different for every nodes
-* `KAFKA_USER`: Kafka SASL user (optional)
-* `KAFKA_PASSWORD`: Kafka SASL password (optional)
-* `KAFKA_TLS`: Enable TLS (default to `0`)
 
 ## Copyright
 
 For Mercure: [Kévin Dunglas](https://dunglas.fr), all rights reserved.
+
+# How this example was built:
+
+## Installation
+```bash
+$MERCURE_VERSION="0.14.0"
+wget https://github.com/dunglas/mercure/releases/download/v{$MERCURE_VERSION}/mercure_{$MERCURE_VERSION}_Linux_x86_64.tar.gz
+gunzip mercure_{$MERCURE_VERSION}_Linux_x86_64.tar.gz
+tar xvf mercure_{$MERCURE_VERSION}_Linux_x86_64.tar
+```
+
+## Add mount for DB (you can also use postgres etc..)
+`.platform.app.yaml`
+
+```yaml
+mounts:
+    'db':
+        source: local
+        source_path: db
+```
+## Make sure caching are request buffering are off
+
+`.platform/routes.yaml`
+```yaml
+"https://mercure.{default}/":
+    type: upstream
+    upstream: "mercure:http"
+    cache:
+        enabled: false
+```
+
+Andin `.platform.app.yaml`
+
+```yaml
+        locations:
+            /:
+                allow: false
+                passthru: true
+                request_buffering:
+                  enabled: false
+```
+
+## Configuration (in the `variables.env` section:)
+
+```bash
+SERVER_NAME=:$PORT
+MERCURE_PUBLISHER_JWT_KEY='!ChangeMe!'
+MERCURE_SUBSCRIBER_JWT_KEY='!ChangeMe!'
+```
+
+## Start command
+
+```
+./mercure run -config Caddyfile.platform_sh
+```
