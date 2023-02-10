@@ -6,7 +6,9 @@ Mercure is especially useful to add streaming capabilities to REST and GraphQL A
 
 See https://mercure.rocks.
 
-<a href="https://console.platform.sh/projects/create-project/?template=https://github.com/platformsh/mercure-rocks-example&utm_campaign=deploy_on_platform?utm_medium=button&utm_source=affiliate_links&utm_content=https://github.com/platformsh/mercure-rocks-example" target="_blank" title="Deploy with Platform.sh"><img src="https://platform.sh/images/deploy/deploy-button-lg-blue.svg"></a>
+<a href="https://console.platform.sh/projects/create-project?template=https://raw.githubusercontent.com/flovntp/mercure-rocks-example/version-14/.platform/metadata/mercure-0.14.4.template.yaml&utm_content=platformsh-templates&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform" target="_blank">
+    <img src="https://platform.sh/images/deploy/deploy-button-lg-blue.svg" alt="Deploy on Platform.sh" width="175px">
+</a>
 
 Make sure you change in `.platform/applications.yaml`
 
@@ -27,7 +29,7 @@ For Mercure: [Kévin Dunglas](https://dunglas.fr), all rights reserved.
 
 ## Installation
 ```bash
-$MERCURE_VERSION="0.14.0"
+$MERCURE_VERSION="0.14.4"
 wget https://github.com/dunglas/mercure/releases/download/v{$MERCURE_VERSION}/mercure_{$MERCURE_VERSION}_Linux_x86_64.tar.gz
 gunzip mercure_{$MERCURE_VERSION}_Linux_x86_64.tar.gz
 tar xvf mercure_{$MERCURE_VERSION}_Linux_x86_64.tar
