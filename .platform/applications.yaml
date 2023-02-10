@@ -15,9 +15,9 @@
         source_path: db
     hooks:
         build: |
-          FILE="mercure_${MERCUREVERSION}_Linux_x86_64.tar.gz"
+          FILE="mercure_${MERCURE_VERSION}_Linux_x86_64.tar.gz"
           if [ ! -f "$PLATFORM_CACHE_DIR/$FILE" ]; then
-            URL="https://github.com/dunglas/mercure/releases/download/v${MERCUREVERSION}/$FILE"
+            URL="https://github.com/dunglas/mercure/releases/download/v${MERCURE_VERSION}/$FILE"
             echo "Downloading $URL"
             wget -O "$PLATFORM_CACHE_DIR/$FILE" $URL
           else
