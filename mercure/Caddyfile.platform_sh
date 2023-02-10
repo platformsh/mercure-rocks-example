@@ -16,6 +16,9 @@ log {
 	}
 }
 
+#cors
+header Access-Control-Allow-Credentials true
+
 {$EXTRA_DIRECTIVES}
 
 route {
@@ -32,7 +35,7 @@ route {
 		cors_origins *
 		publish_origins *
 		ui
-		# demo
+		demo
 		anonymous
 		subscriptions
 		# Extra directives

@@ -4,7 +4,7 @@
         root: mercure
     variables:
       env:
-        MERCURE_VERSION: "0.14.0"
+        MERCURE_VERSION: "0.14.4"
         SERVER_NAME: :8888
         MERCURE_PUBLISHER_JWT_KEY: '!ChangeMe!'
         MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeMe!'
@@ -15,12 +15,19 @@
         source_path: db
     hooks:
         build: |
-          wget https://github.com/dunglas/mercure/releases/download/v${MERCURE_VERSION}/mercure_${MERCURE_VERSION}_Linux_x86_64.tar.gz
-          gunzip mercure_${MERCURE_VERSION}_Linux_x86_64.tar.gz
-          tar xvf mercure_${MERCURE_VERSION}_Linux_x86_64.tar
+          FILE="mercure_${MERCUREVERSION}_Linux_x86_64.tar.gz"
+          if [ ! -f "$PLATFORM_CACHE_DIR/$FILE" ]; then
+            URL="https://github.com/dunglas/mercure/releases/download/v${MERCUREVERSION}/$FILE"
+            echo "Downloading $URL"
+            wget -O "$PLATFORM_CACHE_DIR/$FILE" $URL
+          else
+            echo "Found $FILE in cache, using cache"
+          fi
+          file $PLATFORM_CACHE_DIR/$FILE
+          tar xvzf $PLATFORM_CACHE_DIR/$FILE
     web:
         commands:
-            start: ./mercure run -config Caddyfile.platform_sh
+            start: ./mercure run --config Caddyfile.platform_sh
         locations:
             /:
                 allow: false
