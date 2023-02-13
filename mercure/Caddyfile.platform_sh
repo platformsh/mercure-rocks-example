@@ -16,6 +16,9 @@ log {
 	}
 }
 
+#cors
+header Access-Control-Allow-Credentials true
+
 {$EXTRA_DIRECTIVES}
 
 route {
